@@ -1,24 +1,40 @@
 'use client';
+
 import './index.scss';
-import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import useStore from '@/services/store/zustand';
+import { getConfigQueryFn } from '@/services/api/config';
+
+const selectHeaderConfig = appConfig => {
+  return appConfig.header;
+};
 
 const Header = () => {
-  const config = useStore((state) => state?.config);
-  console.log('@config', config);
-  const headerConfig = config?.filter((i) => i.key === 'header').pop().value
-    .navigation.items;
+  const { data: appConfig } = useQuery({
+    queryKey: ['app_config'],
+    queryFn: getConfigQueryFn,
+  });
+
+  console.log('@header app config:', appConfig);
+
+  if (appConfig === undefined) return 'loading...';
+
+  const headerConfig = selectHeaderConfig(appConfig);
+
+  const {
+    backgroundColor,
+    color,
+  } = headerConfig.styles;
+
+  const headerStyle = {
+    backgroundColor,
+    color,
+  };
 
   return (
-    <div className="header">
-      {headerConfig?.map((i) => (
-        <Link key={i.title} href={i.link}>
-          <span>{i.title}</span>
-        </Link>
-      ))}
-    </div>
-  );
+    <header className='header' style={headerStyle}>
+      
+    </header>
+  )
 };
 
 export default Header;

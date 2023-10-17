@@ -1,19 +1,39 @@
 'use client';
+
 import { useQuery } from '@tanstack/react-query';
+import { getConfigQueryFn } from '@/services/api/config';
 import './index.scss';
-import useStore from '@/services/store/zustand';
+
+const selectFooterConfig = appConfig => {
+  return appConfig.footer;
+};
 
 const Footer = () => {
-  const config = useStore((state) => state.config);
-  const footerConfig = config?.filter((i) => i.key === 'footer').pop().value
-    .navigation.items;
+  const { data: appConfig } = useQuery({
+    queryKey: ['app_config'],
+    queryFn: getConfigQueryFn,
+  });
+
+  console.log('@footer app config:', appConfig);
+
+  if (appConfig === undefined) return 'loading...';
+
+  const footerConfig = selectFooterConfig(appConfig);
+
+  const {
+    backgroundColor,
+    color,
+  } = footerConfig.styles;
+
+  const footerStyle = {
+    backgroundColor,
+    color,
+  };
 
   return (
-    <div className="footer">
-      {footerConfig?.map((i) => (
-        <span key={i.link}>{i.title}</span>
-      ))}
-    </div>
+    <footer className='footer' style={footerStyle}>
+
+    </footer>
   );
 };
 
