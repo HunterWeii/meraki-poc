@@ -1,0 +1,12 @@
+.footer {
+  border: 1px solid red;
+  width: 100%;
+  padding: 0px 16px;
+  display: flex;
+  justify-content: start;
+  position: fixed;
+  bottom: 0;
+  span {
+    margin-right: 16px;
+  }
+}
