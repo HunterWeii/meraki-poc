@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import { getConfig } from '@/services/api/config';
 import RecoilRootWrapper from '@/components/RecoilRootWrapper';
 import Providers from '@/utils/react-query/provider';
+import PersistGate from '@/components/PersistGate';
 
 // Fetch real DF for DF config
 // Fetch header config from DF config
@@ -19,17 +20,15 @@ export default async function RootLayout({ children }) {
     'https://digital-fortress-dev.eco.astro.com.my/dev/config/XdovZqB9Rg/config.json',
   );
 
-  const headerConfig = config.filter((i) => i.key === 'header').pop();
-  const footerConfig = config.filter((i) => i.key === 'footer').pop();
-
   return (
     <html lang="en">
       <body>
         {/* <RecoilRootWrapper> */}
+        <PersistGate config={config} />
         <Providers>
-          <Header data={headerConfig.value.navigation.items} />
+          <Header />
           {children}
-          <Footer data={footerConfig.value.navigation.items} />
+          <Footer />
         </Providers>
         {/* </RecoilRootWrapper> */}
       </body>

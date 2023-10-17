@@ -4,12 +4,14 @@ const mockPath =
   'https://digital-fortress-dev.eco.astro.com.my/dev/config/XdovZqB9Rg/config.json';
 
 const useStore = create((set) => ({
-  mockPath: mockPath,
-  config: {},
-  fetchConfig: async (mockPath) => {
-    console.log('@test');
-    const response = await fetch(mockPath);
+  path: mockPath,
+  config: null,
+  fetchConfig: async (path) => {
+    const response = await fetch(path);
     set({ config: await response.json() });
+  },
+  setConfig: (config) => {
+    set({ config });
   },
 }));
 
